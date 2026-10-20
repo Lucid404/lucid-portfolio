@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projects — Lucid</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">
+      <img src="assets/LD_Logo-Icon.png" alt="Lucid Logo" class="logo-icon" />
+      Lucid
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="skills.html">Skills &amp; Experiences</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="theme-toggle">
+      <button id="theme-light" title="Light mode">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+      <button id="theme-dark" title="Dark mode">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <h1 class="page-title">Projects</h1>
+
+  <div class="projects-toolbar">
+    <div class="search-bar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="project-search" placeholder="Search Poster, Flyer, Publication Materials" />
+    </div>
+
+    <!-- FILTER DROPDOWN -->
+    <div class="filter-dropdown">
+      <button class="filter-btn" id="filter-toggle" aria-haspopup="true" aria-expanded="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+        <span id="filter-label">Filter by</span>
+        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+
+      <div class="filter-menu" id="filter-menu">
+        <div class="filter-group-title">Date</div>
+        <button data-sort="date-desc">Newest First</button>
+        <button data-sort="date-asc">Oldest First</button>
+
+        <div class="filter-group-title">Name</div>
+        <button data-sort="name-asc">A → Z</button>
+        <button data-sort="name-desc">Z → A</button>
+
+        <div class="filter-group-title">Likes</div>
+        <button data-sort="likes-desc">Most Liked</button>
+        <button data-sort="likes-asc">Least Liked</button>
+
+        <button data-sort="reset" class="reset-option">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY FILTERS -->
+  <div class="category-filters">
+    <button class="category-btn active" data-category="all">All</button>
+    <button class="category-btn" data-category="typography">Typography</button>
+    <button class="category-btn" data-category="logo">Logo</button>
+    <button class="category-btn" data-category="publication">Publication Materials</button>
+    <button class="category-btn" data-category="poster">Poster</button>
+    <button class="category-btn" data-category="social">Social Media</button>
+    <button class="category-btn" data-category="uiux">UI/UX</button>
+    <button class="category-btn" data-category="others">Others</button>
+  </div>
+
+  <div class="grid-3" id="projects-grid" style="padding-bottom:40px;">
+    <div class="project-card" data-title="Poster Series" data-category="poster" data-year="2025" data-desc="Bold typographic poster series exploring color and grid systems."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Brand Identity" data-category="logo" data-year="2025" data-desc="Full visual identity for a startup."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Publication Layout" data-category="publication" data-year="2025" data-desc="Editorial magazine layout."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Social Media Kit" data-category="social" data-year="2025" data-desc="Social templates set."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="App UI Concept" data-category="uiux" data-year="2025" data-desc="Mobile app concept."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Photomanipulation" data-category="others" data-year="2025" data-desc="Composite artwork."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Flyer Design" data-category="poster" data-year="2025" data-desc="Event flyer design."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Banner Design" data-category="social" data-year="2025" data-desc="Web banner set."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Logo Design" data-category="logo" data-year="2025" data-desc="Logo mark exploration."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Magazine Spread" data-category="publication" data-year="2025" data-desc="Editorial spread."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Infographic" data-category="typography" data-year="2025" data-desc="Data visual infographic."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Packaging" data-category="others" data-year="2025" data-desc="Packaging concept design."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Portrait Retouch" data-category="others" data-year="2025" data-desc="Portrait retouching study."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Album Cover" data-category="typography" data-year="2025" data-desc="Album cover artwork."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+    <div class="project-card" data-title="Web Landing" data-category="uiux" data-year="2025" data-desc="Landing page design."><div class="thumb"></div><div class="card-body"><h3>Project Title</h3></div></div>
+  </div>
+
+  <div class="scroll-top">
+    <button title="Back to top">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div>© 2026 Lucid Designs. All rights reserved</div>
+    <div>Made by: Neil Brenan B. Necerio | UI/UX Designer</div>
+    <div class="pills">
+      <a href="#" title="Facebook">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+      </a>
+      <a href="#" title="Pinterest">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12a4 4 0 1 1 5.6 3.5c.5 2.2 1.4 3.5 2.4 4.5.4.4.2 1-.3 1-.8 0-3-1-4.4-4.5M8 12c0 2.5 1.5 4.5 3 5.5"></path><circle cx="12" cy="12" r="10"></circle></svg>
+      </a>
+      <a href="mailto:neilnecerio4@gmail.com" title="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+      </a>
+      <a href="#" title="GitHub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+      </a>
+    </div>
+  </footer>
+</main>
+
+<!-- PROJECT MODAL -->
+<div class="modal-backdrop" id="project-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('project-modal')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+    <div class="modal-project-img"></div>
+    <div class="modal-project-head">
+      <h3>Project Title</h3>
+      <span class="year">2025</span>
+    </div>
+    <div class="modal-project-category" id="modal-category">Poster</div>
+    <div class="modal-project-body">
+      <p>A dynamic visual layout designed to capture attention through bold typography, balanced composition, and clean brand aesthetics.</p>
+    </div>
+    <div class="modal-project-actions">
+      <div><div class="likes" id="like-counter">0 Likes</div></div>
+      <button class="like-btn" title="Like">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      </button>
+      <a href="#" class="download-btn-round" title="Download">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
