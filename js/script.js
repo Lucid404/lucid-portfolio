@@ -48,18 +48,38 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// ---------- DOWNLOAD COUNTER ----------
+// ---------- DOWNLOAD COUNTER (Firestore) ----------
 const downloadBtn = document.getElementById('download-cv-btn');
 const downloadCounter = document.getElementById('download-counter');
 
-if (downloadBtn && downloadCounter) {
-  let downloads = parseInt(localStorage.getItem('cvDownloads')) || 0;
-  downloadCounter.textContent = `${downloads} Downloads`;
+if (downloadBtn && downloadCounter && window.firestore) {
+  const { db, doc, getDoc, updateDoc, increment } = window.firestore;
+  const countersDocRef = doc(db, "siteData", "counters");
 
-  downloadBtn.addEventListener('click', () => {
-    downloads++;
-    localStorage.setItem('cvDownloads', downloads);
-    downloadCounter.textContent = `${downloads} Downloads`;
+  const updateDownloadDisplay = async () => {
+    try {
+      const docSnap = await getDoc(countersDocRef);
+      if (docSnap.exists()) {
+        const count = docSnap.data().downloads || 0;
+        downloadCounter.textContent = `${count} Downloads`;
+      }
+    } catch (error) {
+      console.error("Error fetching download count: ", error);
+    }
+  };
+
+  updateDownloadDisplay(); // Call on page load
+
+  downloadBtn.addEventListener('click', async () => {
+    try {
+      // Atomically increment the counter by 1
+      await updateDoc(countersDocRef, {
+        downloads: increment(1)
+      });
+      updateDownloadDisplay();
+    } catch (error) {
+      console.error("Error updating download count: ", error);
+    }
   });
 }
 
@@ -74,8 +94,8 @@ const categoryLabels = {
   'others': 'Others'
 };
 
-// ---------- PROJECT MODAL & LIKE COUNTER ----------
-function openProject(card) {
+// ---------- PROJECT MODAL & PER-PROJECT LIKES (Firestore) ----------
+async function openProject(card) {
   const title = card.dataset.title || 'Project Title';
   const desc = card.dataset.desc || 'A dynamic visual layout designed to capture attention.';
   const year = card.dataset.year || '2025';
@@ -106,37 +126,79 @@ function openProject(card) {
     imgBox.textContent = '';
   }
 
-  // --- Like Counter Logic ---
+  // --- LIKE COUNTER LOGIC ---
   const likeBtn = modal.querySelector('.like-btn');
   const likeCount = modal.querySelector('.likes');
-  const likeKey = `likes_${title}`;
-  const likedKey = `liked_${title}`;
+  
+  // Create a safe ID for the database from the project title (e.g., "Poster Series" -> "poster-series")
+  const projectId = title.toLowerCase().replace(/[^a-z0-9]/g, '-');
+  const likedKey = `liked_${projectId}`; // Check localStorage if this user already liked it
 
-  let likes = parseInt(localStorage.getItem(likeKey)) || 0;
-  likeCount.textContent = `${likes} Likes`;
+  if (window.firestore && likeBtn && likeCount) {
+    const { db, doc, getDoc, setDoc, updateDoc, increment } = window.firestore;
+    const projectDocRef = doc(db, "projectLikes", projectId);
 
-  if (localStorage.getItem(likedKey) === 'true') {
-    likeBtn.classList.add('liked');
-  } else {
-    likeBtn.classList.remove('liked');
-  }
+    // 1. Fetch the current likes from the database
+    try {
+      const docSnap = await getDoc(projectDocRef);
+      let currentLikes = 0;
+      
+      if (docSnap.exists()) {
+        currentLikes = docSnap.data().likes || 0;
+      } else {
+        // If the project doesn't have a document yet, create one with 0 likes
+        await setDoc(projectDocRef, { likes: 0 });
+      }
+      
+      likeCount.textContent = `${currentLikes} Likes`;
 
-  const newLikeBtn = likeBtn.cloneNode(true);
-  likeBtn.parentNode.replaceChild(newLikeBtn, likeBtn);
+      // Check if this user already liked it (to prevent spamming)
+      if (localStorage.getItem(likedKey) === 'true') {
+        likeBtn.classList.add('liked');
+      } else {
+        likeBtn.classList.remove('liked');
+      }
 
-  newLikeBtn.addEventListener('click', function () {
-    if (this.classList.contains('liked')) {
-      likes--;
-      this.classList.remove('liked');
-      localStorage.setItem(likedKey, 'false');
-    } else {
-      likes++;
-      this.classList.add('liked');
-      localStorage.setItem(likedKey, 'true');
+    } catch (error) {
+      console.error("Error fetching likes: ", error);
+      likeCount.textContent = `0 Likes`;
     }
-    localStorage.setItem(likeKey, likes);
-    likeCount.textContent = `${likes} Likes`;
-  });
+
+    // 2. Handle the click event
+    // Clone the button to remove old event listeners
+    const newLikeBtn = likeBtn.cloneNode(true);
+    likeBtn.parentNode.replaceChild(newLikeBtn, likeBtn);
+
+    newLikeBtn.addEventListener('click', async function () {
+      const isLiked = this.classList.contains('liked');
+      
+      try {
+        if (!isLiked) {
+          // User is liking the project
+          this.classList.add('liked');
+          localStorage.setItem(likedKey, 'true');
+          await updateDoc(projectDocRef, { likes: increment(1) });
+        } else {
+          // User is un-liking the project
+          this.classList.remove('liked');
+          localStorage.setItem(likedKey, 'false');
+          await updateDoc(projectDocRef, { likes: increment(-1) });
+        }
+
+        // Fetch the newest count to display immediately
+        const updatedSnap = await getDoc(projectDocRef);
+        if (updatedSnap.exists()) {
+          likeCount.textContent = `${updatedSnap.data().likes} Likes`;
+        }
+
+      } catch (error) {
+        console.error("Error updating likes: ", error);
+      }
+    });
+  } else {
+    // Fallback if Firebase isn't loaded
+    likeCount.textContent = `0 Likes`;
+  }
 
   openModal('project-modal');
 }
@@ -209,7 +271,8 @@ if (filterToggle && filterMenu && projectsGrid) {
   // Helper: get likes for a project from localStorage
   function getLikes(card) {
     const title = card.dataset.title || '';
-    return parseInt(localStorage.getItem(`likes_${title}`)) || 0;
+    const projectId = title.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    return parseInt(localStorage.getItem(`likes_${projectId}`)) || 0;
   }
 
   // Sorting function
