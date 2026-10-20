@@ -155,9 +155,9 @@
 <!-- FIREBASE SETUP -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, doc, onSnapshot, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  // ⚠️ PASTE YOUR ACTUAL FIREBASE CONFIG INSIDE THESE CURLY BRACES
+  // ⚠️ REPLACE THIS WITH YOUR ACTUAL FIREBASE CONFIG
   const firebaseConfig = {
     apiKey: "AIzaSyCV_o1ZQzpHznQnwsGU93VgpB0BVvygtBQ",
     authDomain: "lucid-portfolio.firebaseapp.com",
@@ -170,7 +170,8 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   
-  window.firestore = { db, doc, getDoc, setDoc, updateDoc, increment };
+  // Make sure `onSnapshot` is included here
+  window.firestore = { db, doc, onSnapshot, getDoc, setDoc, updateDoc, increment };
 </script>
 
 <script src="js/script.js"></script>
