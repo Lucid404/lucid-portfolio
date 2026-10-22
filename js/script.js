@@ -107,14 +107,26 @@ async function openProject(card) {
   }
 
   const imgBox = modal.querySelector('.modal-project-img');
+  const downloadBtn = modal.querySelector('#modal-download-btn');
+
   if (img) {
     imgBox.style.backgroundImage = `url(${img})`;
     imgBox.style.backgroundSize = 'cover';
     imgBox.style.backgroundPosition = 'center';
     imgBox.textContent = '';
+
+    // Set the download button to download the image
+    if (downloadBtn) {
+      downloadBtn.href = img;
+      downloadBtn.setAttribute('download', title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.jpg');
+    }
   } else {
     imgBox.style.backgroundImage = '';
     imgBox.textContent = '';
+    if (downloadBtn) {
+      downloadBtn.href = '#';
+      downloadBtn.removeAttribute('download');
+    }
   }
 
   // --- LIKE COUNTER LOGIC ---
@@ -247,7 +259,6 @@ if (filterToggle && filterMenu && projectsGrid) {
     }
   });
 
-  // UPDATED: Now fetches global likes from Firebase to sort
   async function sortProjects(sortType) {
     const cards = Array.from(projectsGrid.querySelectorAll('.project-card'));
 
@@ -257,7 +268,6 @@ if (filterToggle && filterMenu && projectsGrid) {
       return { card, title, year, likes: 0 };
     });
 
-    // If sorting by likes, fetch the latest global counts from Firebase
     if (sortType === 'likes-desc' || sortType === 'likes-asc') {
       if (window.firestore) {
         const { db, collection, getDocs } = window.firestore;
@@ -268,7 +278,6 @@ if (filterToggle && filterMenu && projectsGrid) {
             likesMap[doc.id] = doc.data().likes || 0;
           });
 
-          // Assign the fetched likes to each project
           sorted.forEach(item => {
             const projectId = item.title.toLowerCase().replace(/[^a-z0-9]/g, '-');
             item.likes = likesMap[projectId] || 0;
