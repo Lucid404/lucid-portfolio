@@ -274,16 +274,16 @@ svg {
   margin-bottom: 10px;
 }
 
+/* Updated to a 2x2 Grid */
 .hero-cta {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap; /* Changed to wrap so the 4 buttons fit nicely */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   width: 100%;
 }
 
 .hero-cta .btn {
-  flex: 1 1 auto;
+  width: 100%;
 }
 
 .hero-right {
@@ -1184,8 +1184,10 @@ svg {
     text-align: center;
   }
   
-  .hero-cta { flex-direction: column; }
-  .hero-cta .btn { width: 100%; }
+  /* Changed to 1 column for mobile */
+  .hero-cta { 
+    grid-template-columns: 1fr; 
+  }
 
   .grid-3,
   .edu-grid {
