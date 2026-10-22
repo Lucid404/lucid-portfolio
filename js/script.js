@@ -53,11 +53,9 @@ const downloadBtn = document.getElementById('download-cv-btn');
 const downloadCounter = document.getElementById('download-counter');
 
 if (downloadBtn && downloadCounter && window.firestore) {
-  // Destructure the required Firebase functions
   const { db, doc, onSnapshot, updateDoc, increment } = window.firestore;
   const countersDocRef = doc(db, "siteData", "counters");
 
-  // Set up the real-time listener
   onSnapshot(countersDocRef, (docSnap) => {
     if (docSnap.exists()) {
       const count = docSnap.data().downloads || 0;
@@ -67,13 +65,9 @@ if (downloadBtn && downloadCounter && window.firestore) {
     console.error("Error listening to download count: ", error);
   });
 
-  // Handle the button click to increment the counter
   downloadBtn.addEventListener('click', async () => {
     try {
-      await updateDoc(countersDocRef, {
-        downloads: increment(1)
-      });
-      // The onSnapshot listener will automatically update the UI
+      await updateDoc(countersDocRef, { downloads: increment(1) });
     } catch (error) {
       console.error("Error updating download count: ", error);
     }
@@ -107,7 +101,6 @@ async function openProject(card) {
   modal.querySelector('.modal-project-head .year').textContent = year;
   modal.querySelector('.modal-project-body p').textContent = desc;
 
-  // Set the category badge
   const categoryEl = modal.querySelector('.modal-project-category');
   if (categoryEl) {
     categoryEl.textContent = categoryLabels[category] || 'Others';
@@ -128,15 +121,13 @@ async function openProject(card) {
   const likeBtn = modal.querySelector('.like-btn');
   const likeCount = modal.querySelector('.likes');
   
-  // Create a safe ID for the database from the project title (e.g., "Poster Series" -> "poster-series")
   const projectId = title.toLowerCase().replace(/[^a-z0-9]/g, '-');
-  const likedKey = `liked_${projectId}`; // Check localStorage if this user already liked it
+  const likedKey = `liked_${projectId}`;
 
   if (window.firestore && likeBtn && likeCount) {
     const { db, doc, getDoc, setDoc, updateDoc, increment } = window.firestore;
     const projectDocRef = doc(db, "projectLikes", projectId);
 
-    // 1. Fetch the current likes from the database
     try {
       const docSnap = await getDoc(projectDocRef);
       let currentLikes = 0;
@@ -144,13 +135,11 @@ async function openProject(card) {
       if (docSnap.exists()) {
         currentLikes = docSnap.data().likes || 0;
       } else {
-        // If the project doesn't have a document yet, create one with 0 likes
         await setDoc(projectDocRef, { likes: 0 });
       }
       
       likeCount.textContent = `${currentLikes} Likes`;
 
-      // Check if this user already liked it (to prevent spamming)
       if (localStorage.getItem(likedKey) === 'true') {
         likeBtn.classList.add('liked');
       } else {
@@ -162,8 +151,6 @@ async function openProject(card) {
       likeCount.textContent = `0 Likes`;
     }
 
-    // 2. Handle the click event
-    // Clone the button to remove old event listeners
     const newLikeBtn = likeBtn.cloneNode(true);
     likeBtn.parentNode.replaceChild(newLikeBtn, likeBtn);
 
@@ -172,18 +159,15 @@ async function openProject(card) {
       
       try {
         if (!isLiked) {
-          // User is liking the project
           this.classList.add('liked');
           localStorage.setItem(likedKey, 'true');
           await updateDoc(projectDocRef, { likes: increment(1) });
         } else {
-          // User is un-liking the project
           this.classList.remove('liked');
           localStorage.setItem(likedKey, 'false');
           await updateDoc(projectDocRef, { likes: increment(-1) });
         }
 
-        // Fetch the newest count to display immediately
         const updatedSnap = await getDoc(projectDocRef);
         if (updatedSnap.exists()) {
           likeCount.textContent = `${updatedSnap.data().likes} Likes`;
@@ -194,7 +178,6 @@ async function openProject(card) {
       }
     });
   } else {
-    // Fallback if Firebase isn't loaded
     likeCount.textContent = `0 Likes`;
   }
 
@@ -251,14 +234,12 @@ const projectsGrid = document.getElementById('projects-grid');
 const filterDropdown = document.querySelector('.filter-dropdown');
 
 if (filterToggle && filterMenu && projectsGrid) {
-  // Toggle dropdown open/close
   filterToggle.addEventListener('click', (e) => {
     e.stopPropagation();
     filterDropdown.classList.toggle('open');
     filterToggle.setAttribute('aria-expanded', filterDropdown.classList.contains('open'));
   });
 
-  // Close when clicking outside
   document.addEventListener('click', (e) => {
     if (!filterDropdown.contains(e.target)) {
       filterDropdown.classList.remove('open');
@@ -266,23 +247,37 @@ if (filterToggle && filterMenu && projectsGrid) {
     }
   });
 
-  // Helper: get likes for a project from localStorage
-  function getLikes(card) {
-    const title = card.dataset.title || '';
-    const projectId = title.toLowerCase().replace(/[^a-z0-9]/g, '-');
-    return parseInt(localStorage.getItem(`likes_${projectId}`)) || 0;
-  }
-
-  // Sorting function
-  function sortProjects(sortType) {
+  // UPDATED: Now fetches global likes from Firebase to sort
+  async function sortProjects(sortType) {
     const cards = Array.from(projectsGrid.querySelectorAll('.project-card'));
 
     const sorted = cards.map(card => {
       const title = card.dataset.title || '';
       const year = parseInt(card.dataset.year) || 0;
-      const likes = getLikes(card);
-      return { card, title, year, likes };
+      return { card, title, year, likes: 0 };
     });
+
+    // If sorting by likes, fetch the latest global counts from Firebase
+    if (sortType === 'likes-desc' || sortType === 'likes-asc') {
+      if (window.firestore) {
+        const { db, collection, getDocs } = window.firestore;
+        try {
+          const querySnapshot = await getDocs(collection(db, "projectLikes"));
+          const likesMap = {};
+          querySnapshot.forEach((doc) => {
+            likesMap[doc.id] = doc.data().likes || 0;
+          });
+
+          // Assign the fetched likes to each project
+          sorted.forEach(item => {
+            const projectId = item.title.toLowerCase().replace(/[^a-z0-9]/g, '-');
+            item.likes = likesMap[projectId] || 0;
+          });
+        } catch (error) {
+          console.error("Error fetching likes for sorting: ", error);
+        }
+      }
+    }
 
     switch (sortType) {
       case 'date-desc':
@@ -312,9 +307,8 @@ if (filterToggle && filterMenu && projectsGrid) {
     sorted.forEach(({ card }) => projectsGrid.appendChild(card));
   }
 
-  // Handle menu option clicks
   filterMenu.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', async (e) => {
       const sortType = e.target.dataset.sort;
       if (!sortType) return;
 
@@ -325,7 +319,7 @@ if (filterToggle && filterMenu && projectsGrid) {
         filterLabel.textContent = e.target.textContent;
         filterMenu.querySelectorAll('button').forEach(b => b.classList.remove('active'));
         e.target.classList.add('active');
-        sortProjects(sortType);
+        await sortProjects(sortType);
       }
 
       filterDropdown.classList.remove('open');

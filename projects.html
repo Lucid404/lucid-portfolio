@@ -79,41 +79,39 @@
     <button class="category-btn" data-category="uiux">UI/UX</button>
     <button class="category-btn" data-category="drawing">Drawing</button>
     <button class="category-btn" data-category="others">Others</button>
-
   </div>
 
-        <div class="grid-3" id="projects-grid" style="padding-bottom:40px;">
-            <div class="project-card" 
-            data-title="Digital Cherry on Top" 
-            data-category="drawing" 
-            data-year="2026"
-            data-desc="This is a digital drawing of a juicy fresh red like lips cherry."
-            data-img="assets/dig-cherryontop.jpg">
-        
+  <div class="grid-3" id="projects-grid" style="padding-bottom:40px;">
+    <div class="project-card" 
+        data-title="Digital Cherry on Top" 
+        data-category="drawing" 
+        data-year="2026"
+        data-desc="This is a digital drawing of a juicy fresh red like lips cherry."
+        data-img="assets/dig-cherryontop.jpg">
+    
         <div class="thumb">
             <img src="assets/dig-cherryontop.jpg" alt="Cherry on Top" style="width: 100%; height: 100%; object-fit: cover;" />
         </div>
         <div class="card-body">
             <h3>Digital Cherry on Top</h3>
         </div>
-        </div>
+    </div>
 
-        <div class="project-card" 
-            data-title="Traditional Cherry on Top" 
-            data-category="drawing" 
-            data-year="2026"
-            data-desc="This is a traditional drawing of a juicy fresh red like lips cherry."
-            data-img="assets/trad-cherryontop.jpg">
-        
+    <div class="project-card" 
+        data-title="Traditional Cherry on Top" 
+        data-category="drawing" 
+        data-year="2026"
+        data-desc="This is a traditional drawing of a juicy fresh red like lips cherry."
+        data-img="assets/trad-cherryontop.jpg">
+    
         <div class="thumb">
             <img src="assets/trad-cherryontop.jpg" alt="Cherry on Top" style="width: 100%; height: 100%; object-fit: cover;" />
         </div>
         <div class="card-body">
             <h3>Traditional Cherry on Top</h3>
         </div>
-        </div>
-
-</div>
+    </div>
+  </div>
 
   <div class="scroll-top">
     <button title="Back to top">
@@ -172,7 +170,7 @@
 <!-- FIREBASE SETUP -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, doc, onSnapshot, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getFirestore, doc, onSnapshot, getDoc, setDoc, updateDoc, increment, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   // ⚠️ REPLACE THIS WITH YOUR ACTUAL FIREBASE CONFIG
   const firebaseConfig = {
@@ -187,8 +185,7 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   
-  // Make sure `onSnapshot` is included here
-  window.firestore = { db, doc, onSnapshot, getDoc, setDoc, updateDoc, increment };
+  window.firestore = { db, doc, onSnapshot, getDoc, setDoc, updateDoc, increment, collection, getDocs };
 </script>
 
 <script src="js/script.js" defer></script>
