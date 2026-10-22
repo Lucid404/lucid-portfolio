@@ -88,6 +88,7 @@ const categoryLabels = {
   'poster': 'Poster',
   'social': 'Social Media',
   'uiux': 'UI/UX',
+  'drawing': 'Drawing',
   'others': 'Others'
 };
 
