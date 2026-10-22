@@ -337,25 +337,54 @@ if (filterToggle && filterMenu && projectsGrid) {
   });
 }
 
-// ---------- CONTACT FORM ----------
+// ---------- CONTACT FORM (Web3Forms Integration) ----------
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Prevents the page from reloading
+    
     const btn = contactForm.querySelector('.form-submit');
     const original = btn.innerHTML;
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
-    setTimeout(() => {
-      btn.textContent = '✓ Message Sent!';
+    // Create a FormData object from the form
+    const formData = new FormData(contactForm);
+    // Convert the FormData to a JSON object
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: json
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        btn.textContent = '✓ Message Sent!';
+        setTimeout(() => {
+          closeModal('contact-modal');
+          contactForm.reset();
+          btn.innerHTML = original;
+          btn.disabled = false;
+        }, 2000);
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      btn.textContent = 'Error. Try again.';
       setTimeout(() => {
-        closeModal('contact-modal');
-        contactForm.reset();
         btn.innerHTML = original;
         btn.disabled = false;
-      }, 1200);
-    }, 1000);
+      }, 2000);
+    }
   });
 }
 

@@ -55,7 +55,7 @@
         Lucid920
       </a>
       
-      <!-- CHANGED TO INSTAGRAM -->
+      <!-- INSTAGRAM -->
       <a href="https://www.instagram.com/eyesoneiru?mdxt=ZXMxeHZpdWVmeDAx" target="_blank" class="contact-pill">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         @neilnecerio
@@ -114,24 +114,30 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
       Send a Message
     </h3>
-    <form id="contact-form">
+    
+    <!-- UPDATED FORM TAG -->
+    <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+      
+      <!-- ⚠️ PASTE YOUR WEB3FORMS ACCESS KEY HERE -->
+      <input type="hidden" name="access_key" value="ca84817c-d27a-43d7-908f-07926ec70c50">
+
       <div class="form-row">
         <div class="form-group">
           <label>First Name</label>
-          <input type="text" placeholder="First Name" required />
+          <input type="text" name="first_name" placeholder="First Name" required />
         </div>
         <div class="form-group">
           <label>Last Name</label>
-          <input type="text" placeholder="Last Name" required />
+          <input type="text" name="last_name" placeholder="Last Name" required />
         </div>
       </div>
       <div class="form-group">
         <label>Email Address</label>
-        <input type="email" placeholder="Email@address.com" required />
+        <input type="email" name="email" placeholder="Email@address.com" required />
       </div>
       <div class="form-group">
         <label>Message</label>
-        <textarea placeholder="Message me..." required></textarea>
+        <textarea name="message" placeholder="Message me..." required></textarea>
       </div>
       <button type="submit" class="btn btn-primary form-submit">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
