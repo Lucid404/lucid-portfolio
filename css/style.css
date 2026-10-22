@@ -277,7 +277,7 @@ svg {
 .hero-cta {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap; /* Changed to wrap so the 4 buttons fit nicely */
   gap: 10px;
   width: 100%;
 }
