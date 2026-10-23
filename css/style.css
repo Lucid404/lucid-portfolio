@@ -1198,6 +1198,13 @@ svg {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  /* Center the last odd item on tablet */
+  .edu-grid .edu-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 10px);
+  }
+
   .skills-grid { grid-template-columns: 1fr; }
 
   .nav-inner { 
@@ -1284,26 +1291,19 @@ svg {
 }
 
 @media (max-width: 600px) {
-  /* Make project grids 3 columns on mobile */
+  /* --- PROJECTS (3 columns) --- */
   .grid-3 { 
     grid-template-columns: repeat(3, 1fr); 
-    gap: 8px; /* Tighter gap to fit 3 across */
+    gap: 8px; 
   }
   
-  /* Keep education grids at 1 column */
-  .edu-grid { 
-    grid-template-columns: 1fr; 
-  }
-
-  /* Shrink the project card text to fit the smaller box */
   .project-card .card-body {
-    padding: 6px 8px; /* Smaller padding */
+    padding: 6px 8px; 
   }
 
   .project-card h3 {
-    font-size: 10px; /* Much smaller font size */
+    font-size: 10px; 
     line-height: 1.3;
-    /* Truncate long text with an ellipsis if it goes past 2 lines */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -1311,6 +1311,44 @@ svg {
     text-overflow: ellipsis;
   }
 
+  /* --- EDUCATION / EXPERIENCES / ACCOMPLISHMENTS (2 columns) --- */
+  .edu-grid {
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px; 
+  }
+
+  /* Center the last odd item seamlessly in the 2-column layout */
+  .edu-grid .edu-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 6px); /* Matches exact width of one column with the 12px gap */
+  }
+
+  /* Adjust text and padding to be readable but fit 2 columns */
+  .edu-card {
+    padding: 12px;
+  }
+  
+  .edu-card h4 { 
+    font-size: 13px; 
+    line-height: 1.2;
+  }
+  
+  .edu-card .school,
+  .edu-card .year { 
+    font-size: 11px; 
+  }
+
+  .edu-card .placeholder-img {
+    margin-bottom: 10px;
+  }
+
+  /* Keep center-grid items (Experiences, Affiliations) looking good */
+  .edu-grid-center .edu-card {
+    max-width: 100%;
+  }
+
+  /* --- OTHER MOBILE ADJUSTMENTS --- */
   .form-row { grid-template-columns: 1fr; }
 
   .page-title { font-size: 24px; }
