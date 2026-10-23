@@ -546,14 +546,14 @@ svg {
 
 /* --- NEW: AFFILIATIONS GRID TO MATCH EDUCATION SIZE AND CENTER --- */
 .affiliation-grid {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
+/* Places the single card exactly in the middle column */
 .affiliation-grid .edu-card {
-  width: 100%;
-  /* This calculates exactly 1/3 of the grid width minus the gaps */
-  max-width: calc((100% - 40px) / 3); 
+  grid-column: 2; 
 }
 
 .tags {
@@ -1209,9 +1209,15 @@ svg {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* Responsive affiliation grid (2 columns on tablet) */
+  /* --- Responsive affiliation grid (Tablet) --- */
+  .affiliation-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
   .affiliation-grid .edu-card {
-    max-width: calc((100% - 20px) / 2);
+    grid-column: span 2; /* Span across both columns */
+    max-width: calc(50% - 10px); /* But constrain to look like 1 column */
+    margin: 0 auto; /* Center it */
   }
 
   .skills-grid { grid-template-columns: 1fr; }
@@ -1403,7 +1409,12 @@ svg {
   .contact-hero h2 { font-size: 28px; }
 
   /* Responsive affiliation grid on mobile (full width) */
+  .affiliation-grid {
+    grid-template-columns: 1fr;
+  }
+  
   .affiliation-grid .edu-card {
+    grid-column: 1;
     max-width: 100%;
   }
 
