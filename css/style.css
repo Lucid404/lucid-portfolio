@@ -447,6 +447,7 @@ svg {
   margin-left: auto;
   object-fit: cover;
   display: block;
+  cursor: zoom-in;
 }
 
 .about-hero-contact .contact-quick {
@@ -508,6 +509,7 @@ svg {
   width: 100%;
   object-fit: cover;
   display: block;
+  cursor: zoom-in;
 }
 
 /* --- Biography paragraph: justified on desktop --- */
@@ -547,6 +549,7 @@ svg {
   background: var(--placeholder);
   border-radius: var(--radius-sm);
   margin-bottom: 16px;
+  cursor: zoom-in; /* ADDED: Shows zoom icon on hover */
 }
 
 .edu-card h4 { font-size: 14px; font-weight: 700; }
@@ -971,6 +974,63 @@ svg {
   border-radius: 50%;
   display: grid;
   place-items: center;
+}
+
+/* ==============================
+   IMAGE LIGHTBOX (NEW)
+   ============================== */
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 40px;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.image-lightbox.open {
+  display: flex;
+  opacity: 1;
+}
+
+.image-lightbox img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  object-fit: contain;
+  transform: scale(0.95);
+  transition: transform var(--transition);
+}
+
+.image-lightbox.open img {
+  transform: scale(1);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background var(--transition);
+  z-index: 2001;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* ==============================

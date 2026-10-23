@@ -394,3 +394,45 @@ document.querySelectorAll('.scroll-top button').forEach(btn => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
+
+// ---------- IMAGE LIGHTBOX (NEW) ----------
+const lightbox = document.getElementById('image-lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+
+// Select all images we want to be able to click and zoom
+const zoomableImages = document.querySelectorAll('.edu-card .placeholder-img, .bio-split .placeholder-img, .about-hero-picture .placeholder-img');
+
+zoomableImages.forEach(img => {
+  img.addEventListener('click', () => {
+    // Only open if the image has an actual source (prevents opening blank gray boxes)
+    if (img.src && !img.src.endsWith('/')) {
+      lightboxImg.src = img.src;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+  });
+});
+
+function closeImageLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+  
+  // Clear the source after the fade-out transition so it doesn't flash the old image next time
+  setTimeout(() => { lightboxImg.src = ''; }, 300);
+}
+
+if (lightbox) {
+  // Close when clicking anywhere in the dark background
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      closeImageLightbox();
+    }
+  });
+  
+  // Close on Escape key (already have a listener, but adding here ensures it works for the lightbox specifically too)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+      closeImageLightbox();
+    }
+  });
+}
