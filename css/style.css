@@ -522,6 +522,17 @@ svg {
   gap: 20px;
 }
 
+/* NEW: Centered Grid for single items */
+.edu-grid-center {
+  display: flex;
+  justify-content: center;
+}
+
+.edu-grid-center .edu-card {
+  width: 100%;
+  max-width: 380px; /* Constrains the width so it matches a 1/3 column */
+}
+
 .edu-card {
   background: var(--bg-alt);
   border: 1px solid var(--border);
@@ -530,7 +541,9 @@ svg {
 }
 
 .edu-card .placeholder-img {
+  width: 100%; /* ADDED: Forces image to fill the card width */
   aspect-ratio: 4/3;
+  object-fit: cover; /* ADDED: Ensures the image doesn't stretch weirdly */
   background: var(--placeholder);
   border-radius: var(--radius-sm);
   margin-bottom: 16px;
