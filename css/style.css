@@ -1345,6 +1345,8 @@ svg {
 
   /* Keep center-grid items (Experiences, Affiliations) looking good */
   .edu-grid-center .edu-card {
+    /* Make the single cards match the exact width of the 2-column grid boxes above */
+    width: calc(50% - 6px); 
     max-width: 100%;
   }
 
