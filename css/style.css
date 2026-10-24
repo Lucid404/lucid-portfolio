@@ -621,6 +621,11 @@ svg {
   line-height: 1.2;
 }
 
+/* Targets the 2nd span (the proficiency level) */
+.skill-head span:nth-child(2) {
+  color: var(--text-muted); /* Change this to any color you want */
+}
+
 .skill-bar {
   background: var(--border);
   height: 8px; 
