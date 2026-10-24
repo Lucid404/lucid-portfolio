@@ -597,28 +597,30 @@ svg {
    ============================== */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr); /* CHANGED: 3 columns */
+  gap: 16px; /* CHANGED: Smaller gap */
 }
 
 .skill-block {
   background: var(--bg-alt);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 20px;
+  padding: 16px; /* CHANGED: Smaller padding */
 }
 
 .skill-head {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 13px; /* CHANGED: Smaller text */
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 10px; /* CHANGED */
+  gap: 8px;
+  line-height: 1.2;
 }
 
 .skill-bar {
   background: var(--border);
-  height: 10px;
+  height: 8px; /* CHANGED: Thinner bar */
   border-radius: var(--radius-full);
   overflow: hidden;
 }
@@ -628,6 +630,11 @@ svg {
   background: var(--purple);
   border-radius: var(--radius-full);
   transition: width 1s ease;
+}
+
+/* CHANGED: Automatically center the last odd skill box */
+.skills-grid > .skill-block:last-child:nth-child(odd) {
+  grid-column: 2;
 }
 
 .responsibilities ul {
@@ -977,7 +984,7 @@ svg {
 }
 
 /* ==============================
-   IMAGE LIGHTBOX (NEW)
+   IMAGE LIGHTBOX
    ============================== */
 .image-lightbox {
   position: fixed;
@@ -1205,7 +1212,26 @@ svg {
     width: calc(50% - 10px);
   }
 
-  .skills-grid { grid-template-columns: 1fr; }
+  /* --- SKILLS MOBILE ADJUSTMENTS --- */
+  .skills-grid { 
+    grid-template-columns: repeat(3, 1fr); /* CHANGED: 3 columns on mobile */
+    gap: 8px; /* Tighter gap */
+  }
+
+  .skill-block { 
+    padding: 10px; /* Much smaller padding */
+  }
+
+  .skill-head { 
+    font-size: 11px; /* Smaller text */
+    margin-bottom: 6px; 
+    flex-direction: column; /* Stack text and level for narrow columns */
+    gap: 2px; 
+  }
+
+  .skill-bar { 
+    height: 6px; /* Thinner bar */
+  }
 
   .nav-inner { 
     flex-wrap: wrap; 
