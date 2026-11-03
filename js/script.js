@@ -48,30 +48,68 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// ---------- DOWNLOAD COUNTER (Firestore with Real-time Listener) ----------
+// ---------- DOWNLOAD COUNTER & PORTFOLIO STATS ----------
 const downloadBtn = document.getElementById('download-cv-btn');
 const downloadCounter = document.getElementById('download-counter');
+const statVisitors = document.getElementById('stat-visitors');
+const statDownloads = document.getElementById('stat-downloads');
+const statLikes = document.getElementById('stat-likes');
 
-if (downloadBtn && downloadCounter && window.firestore) {
-  const { db, doc, onSnapshot, updateDoc, increment } = window.firestore;
+if (window.firestore) {
+  const { db, doc, onSnapshot, setDoc, updateDoc, increment, collection, getDocs } = window.firestore;
   const countersDocRef = doc(db, "siteData", "counters");
 
-  onSnapshot(countersDocRef, (docSnap) => {
-    if (docSnap.exists()) {
-      const count = docSnap.data().downloads || 0;
-      downloadCounter.textContent = `${count} Downloads`;
-    }
-  }, (error) => {
-    console.error("Error listening to download count: ", error);
-  });
+  // 1. Download Counter Logic
+  if (downloadBtn && downloadCounter) {
+    downloadBtn.addEventListener('click', async () => {
+      try {
+        await setDoc(countersDocRef, { downloads: increment(1) }, { merge: true });
+      } catch (error) {
+        console.error("Error updating download count: ", error);
+      }
+    });
+  }
 
-  downloadBtn.addEventListener('click', async () => {
-    try {
-      await updateDoc(countersDocRef, { downloads: increment(1) });
-    } catch (error) {
-      console.error("Error updating download count: ", error);
+  // 2. Visitor Counter Logic (New)
+  if (statVisitors) {
+    // Check if this visitor has already been counted in this browser session
+    if (!sessionStorage.getItem('lucid_visitor_counted')) {
+      // If not, increment the count in Firestore
+      setDoc(countersDocRef, { visitors: increment(1) }, { merge: true })
+        .then(() => {
+          // Mark them as counted so refreshing doesn't add more numbers
+          sessionStorage.setItem('lucid_visitor_counted', 'true');
+        })
+        .catch(err => console.error("Error counting visitor: ", err));
     }
-  });
+
+    // Listen for real-time updates to show the current stats
+    onSnapshot(countersDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        statVisitors.textContent = data.visitors || 0;
+        if (statDownloads) statDownloads.textContent = data.downloads || 0;
+        if (downloadCounter) downloadCounter.textContent = `${data.downloads || 0} Downloads`;
+      }
+    });
+  }
+
+  // 3. Highest Project Likes Logic (New)
+  if (statLikes) {
+    // Fetch all project likes once when the page loads
+    getDocs(collection(db, "projectLikes")).then((querySnapshot) => {
+      let maxLikes = 0;
+      querySnapshot.forEach((doc) => {
+        const likes = doc.data().likes || 0;
+        if (likes > maxLikes) {
+          maxLikes = likes;
+        }
+      });
+      statLikes.textContent = maxLikes;
+    }).catch((error) => {
+      console.error("Error fetching highest likes: ", error);
+    });
+  }
 }
 
 // ---------- CATEGORY LABEL MAPPING ----------
@@ -395,7 +433,7 @@ document.querySelectorAll('.scroll-top button').forEach(btn => {
   });
 });
 
-// ---------- IMAGE LIGHTBOX (NEW) ----------
+// ---------- IMAGE LIGHTBOX ----------
 const lightbox = document.getElementById('image-lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 

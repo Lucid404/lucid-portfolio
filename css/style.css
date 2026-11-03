@@ -543,13 +543,13 @@ svg {
 }
 
 .edu-card .placeholder-img {
-  width: 100%;
+  width: 100%; /* ADDED: Forces image to fill the card width */
   aspect-ratio: 4/3;
-  object-fit: cover;
+  object-fit: cover; /* ADDED: Ensures the image doesn't stretch weirdly */
   background: var(--placeholder);
   border-radius: var(--radius-sm);
   margin-bottom: 16px;
-  cursor: zoom-in;
+  cursor: zoom-in; /* ADDED: Shows zoom icon on hover */
 }
 
 .edu-card h4 { font-size: 14px; font-weight: 700; }
@@ -619,11 +619,6 @@ svg {
   margin-bottom: 10px; 
   gap: 8px;
   line-height: 1.2;
-}
-
-/* Targets the 2nd span (the proficiency level) */
-.skill-head span:nth-child(2) {
-  color: var(--text-muted); /* Change this to any color you want */
 }
 
 .skill-bar {
@@ -1386,4 +1381,62 @@ svg {
   .contact-hero h2 { font-size: 28px; }
 
   body { overflow-x: hidden; }
+}
+
+/* ==============================
+   PORTFOLIO STATS
+   ============================== */
+.portfolio-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 60px;
+  margin-bottom: -20px; /* Pulls the footer slightly closer */
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--purple);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+}
+
+@media (max-width: 600px) {
+  .portfolio-stats {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 10px;
+  }
+  .stat-divider {
+    width: 80%;
+    height: 1px;
+  }
 }
